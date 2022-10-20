@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import myContext from './myContext';
 
 function MyProvider({ children }) {
@@ -7,14 +7,14 @@ function MyProvider({ children }) {
 
   useEffect(() => {
     const requestApi = async () => {
-      try {
-        const response = await fetch('https://swapi.dev/api/planets');
-        const { results } = await response.json();
-        results.map((a) => delete a.residents);
-        setdata(results);
-      } catch (e) {
-        throw new Error(e.message);
-      }
+      const response = await fetch('https://swapi.dev/api/planets');
+      const { results } = await response.json();
+      setdata(results.map((a) => {
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/delete
+        delete a.residents;
+        return a;
+      }));
+      setdata(results);
     };
     requestApi();
   }, []);

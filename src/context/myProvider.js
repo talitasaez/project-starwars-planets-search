@@ -4,6 +4,7 @@ import myContext from './myContext';
 
 function MyProvider({ children }) {
   const [data, setdata] = useState([]);
+  const [nameFilterInput, setNameFilterInput] = useState('');
 
   useEffect(() => {
     const requestApi = async () => {
@@ -21,7 +22,9 @@ function MyProvider({ children }) {
 
   const contexto = useMemo(() => ({
     data,
-  }), [data]);
+    nameFilterInput,
+    setNameFilterInput,
+  }), [data, nameFilterInput]);
 
   return (
     <myContext.Provider value={ contexto }>

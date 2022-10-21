@@ -1,12 +1,32 @@
 import React, { useContext } from 'react';
 import MyContext from '../context/myContext';
 
+/* feito com a ajuda da mentoria turma 23 A instrutores Artur e Henrique e mentoria Hellen turma 24 A */
+
 function Table() {
   const {
     data,
+    setData,
     nameFilterInput,
     setNameFilterInput,
+    filterSelected,
+    setFilterSelected,
   } = useContext(MyContext);
+
+  const handleClickFilter = () => {
+    const { columnFilter, comparisonFilter, valueFilter } = filterSelected;
+    const filterComparison = data.filter((element) => {
+      switch (comparisonFilter) {
+      case 'maior que':
+        return element[columnFilter] > Number(valueFilter);
+      case 'menor que':
+        return element[columnFilter] < Number(valueFilter);
+      default:
+        return element[columnFilter] === valueFilter;
+      }
+    });
+    setData(filterComparison);
+  };
 
   return (
     <div>
@@ -20,6 +40,47 @@ function Table() {
         />
 
       </label>
+      <div>
+        <select
+          data-testid="column-filter"
+          name="columnFilter"
+          value={ filterSelected.columnFilter }
+          onChange={ ({ target }) => setFilterSelected((prevSelected) => (
+            { ...prevSelected, columnFilter: target.value })) }
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+        <select
+          data-testid="comparison-filter"
+          name="comparisonFilter"
+          value={ filterSelected.comparisonFilter }
+          onChange={ ({ target }) => setFilterSelected((prevSelected) => (
+            { ...prevSelected, comparisonFilter: target.value })) }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+        <input
+          name="valueFilter"
+          value={ filterSelected.valueFilter }
+          type="number"
+          data-testid="value-filter"
+          onChange={ ({ target }) => setFilterSelected((prevSelected) => (
+            { ...prevSelected, valueFilter: target.value })) }
+        />
+        <button
+          data-testid="button-filter"
+          type="button"
+          onClick={ handleClickFilter }
+        >
+          Filtrar
+        </button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -38,7 +99,6 @@ function Table() {
             <th>Url</th>
           </tr>
         </thead>
-        {/* feito com a ajuda da mentoria 23A Artur  */}
         <tbody>
           {data
             .filter(({ name }) => name.toLowerCase()

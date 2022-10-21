@@ -3,28 +3,36 @@ import { useEffect, useState, useMemo } from 'react';
 import myContext from './myContext';
 
 function MyProvider({ children }) {
-  const [data, setdata] = useState([]);
+  const [data, setData] = useState([]);
   const [nameFilterInput, setNameFilterInput] = useState('');
+  const [filterSelected, setFilterSelected] = useState({
+    columnFilter: 'population',
+    comparisonFilter: 'maior que',
+    valueFilter: 0,
+  });
 
   useEffect(() => {
     const requestApi = async () => {
       const response = await fetch('https://swapi.dev/api/planets');
       const { results } = await response.json();
-      setdata(results.map((a) => {
+      setData(results.map((a) => {
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/delete
         delete a.residents;
         return a;
       }));
-      setdata(results);
+      setData(results);
     };
     requestApi();
   }, []);
 
   const contexto = useMemo(() => ({
     data,
+    setData,
     nameFilterInput,
     setNameFilterInput,
-  }), [data, nameFilterInput]);
+    filterSelected,
+    setFilterSelected,
+  }), [data, nameFilterInput, filterSelected, setData]);
 
   return (
     <myContext.Provider value={ contexto }>

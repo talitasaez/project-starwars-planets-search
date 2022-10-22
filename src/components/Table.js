@@ -11,10 +11,16 @@ function Table() {
     setNameFilterInput,
     filterSelected,
     setFilterSelected,
+    newFilterNumeric,
+    setNewFilterNumeric,
   } = useContext(MyContext);
 
   const handleClickFilter = () => {
     const { columnFilter, comparisonFilter, valueFilter } = filterSelected;
+    const newFilterColumn = newFilterNumeric.filter(
+      (columns) => columns !== columnFilter,
+    );
+    console.log(columnFilter, 'aqui');
     const filterComparison = data.filter((element) => {
       switch (comparisonFilter) {
       case 'maior que':
@@ -26,6 +32,12 @@ function Table() {
       }
     });
     setData(filterComparison);
+    setNewFilterNumeric(newFilterColumn);
+    setFilterSelected(
+      { columnFilter: 'population',
+        comparisonFilter: 'maior que',
+        valueFilter: 0 },
+    );
   };
 
   return (
@@ -48,11 +60,16 @@ function Table() {
           onChange={ ({ target }) => setFilterSelected((prevSelected) => (
             { ...prevSelected, columnFilter: target.value })) }
         >
-          <option value="population">population</option>
+          {/* <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          <option value="surface_water">surface_water</option> */}
+          {
+            newFilterNumeric.map((e) => (
+              <option key={ e }>{e}</option>
+            ))
+          }
         </select>
         <select
           data-testid="comparison-filter"
@@ -119,7 +136,6 @@ function Table() {
                 <td>{datas.url}</td>
               </tr>
             ))}
-          ;
         </tbody>
       </table>
     </div>

@@ -10,6 +10,9 @@ function MyProvider({ children }) {
     comparisonFilter: 'maior que',
     valueFilter: 0,
   });
+  const newFilterOption = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const [newFilterNumeric, setNewFilterNumeric] = useState(newFilterOption);
 
   useEffect(() => {
     const requestApi = async () => {
@@ -32,7 +35,9 @@ function MyProvider({ children }) {
     setNameFilterInput,
     filterSelected,
     setFilterSelected,
-  }), [data, nameFilterInput, filterSelected, setData]);
+    newFilterNumeric,
+    setNewFilterNumeric,
+  }), [data, nameFilterInput, filterSelected, newFilterNumeric]);
 
   return (
     <myContext.Provider value={ contexto }>

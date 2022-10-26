@@ -12,7 +12,7 @@ import userEvent from '@testing-library/user-event';
 //   const linkElement = screen.getByText(/Hello, App!/i);
 //   expect(linkElement).toBeInTheDocument();
 // });
-afterEach(() => jest.clearAllMocks());
+
 describe('Testando aplicação Star Wars', () => {
   it('Verifica se a API é chamada', async () => {
     global.fetch = jest.fn().mockResolvedValue({
@@ -38,4 +38,4 @@ describe('Testando aplicação Star Wars', () => {
 
    
   });
-});
+}); 

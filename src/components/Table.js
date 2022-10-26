@@ -97,6 +97,20 @@ function Table() {
         >
           Filtrar
         </button>
+        {/* <button
+        type="button"
+        data-testid='filter'
+        // onclick={}
+        >
+        </button> */}
+        <label htmlFor="button-remove-filters">
+          <input
+            id="button-remove-filters"
+            type="button"
+            data-testid="button-remove-filters"
+          />
+          Remove Filtros
+        </label>
       </div>
       <table>
         <thead>
